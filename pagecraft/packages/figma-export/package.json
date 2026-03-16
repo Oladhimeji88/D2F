@@ -1,0 +1,26 @@
+{
+  "name": "@pagecraft/figma-export",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "clean": "rimraf dist",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pagecraft/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.117.0",
+    "vitest": "^3.0.8"
+  }
+}

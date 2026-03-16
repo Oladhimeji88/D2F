@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "PageCraft Capture",
+  "version": "0.1.0",
+  "description": "Capture authenticated pages, generate style-guide captures, and plan site crawls for PageCraft.",
+  "permissions": ["activeTab", "storage", "tabs", "scripting", "sidePanel"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "PageCraft",
+    "default_popup": "popup.html"
+  },
+  "side_panel": {
+    "default_path": "side-panel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

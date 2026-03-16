@@ -1,0 +1,23 @@
+{
+  "name": "@pagecraft/extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "clean": "rimraf dist",
+    "dev": "node ./scripts/build.mjs --watch",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pagecraft/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.321",
+    "esbuild": "^0.25.1",
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.8"
+  }
+}

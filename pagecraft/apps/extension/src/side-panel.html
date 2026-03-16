@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PageCraft Route Planner</title>
+    <link rel="stylesheet" href="./side-panel.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="header">
+        <div>
+          <p class="eyebrow">PageCraft</p>
+          <h1>Route planner</h1>
+        </div>
+        <button id="refresh-routes">Refresh routes</button>
+      </header>
+
+      <section class="panel">
+        <p id="side-project" class="muted"></p>
+        <p id="side-metrics" class="muted"></p>
+      </section>
+
+      <section class="panel">
+        <ul id="route-list" class="route-list"></ul>
+      </section>
+
+      <section class="panel">
+        <button id="start-selected-crawl" class="primary">Start Crawl With Selected Routes</button>
+      </section>
+
+      <footer id="side-status" class="status" data-tone="neutral">Preparing route selector…</footer>
+    </main>
+    <script src="./side-panel.js"></script>
+  </body>
+</html>

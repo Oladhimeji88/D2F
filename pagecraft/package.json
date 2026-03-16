@@ -1,0 +1,44 @@
+{
+  "name": "pagecraft",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.6.2",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean && rimraf node_modules",
+    "dev": "turbo run dev --parallel",
+    "dev:api": "pnpm --filter @pagecraft/api dev",
+    "dev:web": "pnpm --filter @pagecraft/web dev",
+    "dev:worker": "pnpm --filter @pagecraft/worker dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "turbo run lint",
+    "state:reset": "rimraf .pagecraft-dev",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "db:generate": "pnpm --filter @pagecraft/api db:generate",
+    "db:migrate": "pnpm --filter @pagecraft/api db:migrate",
+    "db:deploy": "pnpm --filter @pagecraft/api db:deploy"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "eslint-import-resolver-typescript": "^4.3.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.4.0",
+    "turbo": "^2.4.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
+  }
+}

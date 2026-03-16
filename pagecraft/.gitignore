@@ -1,0 +1,9 @@
+node_modules
+.next
+.turbo
+dist
+coverage
+.pagecraft-dev
+.env
+.env.local
+*.log

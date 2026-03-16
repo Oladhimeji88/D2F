@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-sand text-ink antialiased;
+  background-image:
+    radial-gradient(circle at top left, rgba(21, 94, 239, 0.16), transparent 34%),
+    linear-gradient(180deg, #f7f3eb 0%, #ece6d8 100%);
+}
+
+a {
+  @apply text-inherit no-underline;
+}
+
+.panel {
+  @apply rounded-[1.25rem] border border-slate-200/80 bg-white/85 shadow-panel backdrop-blur;
+}
+
+.chip {
+  @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold;
+}

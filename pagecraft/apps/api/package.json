@@ -1,0 +1,26 @@
+{
+  "name": "@pagecraft/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "clean": "rimraf dist",
+    "db:deploy": "node -e \"console.log('Local JSON store MVP: no database deployment step required.')\"",
+    "db:generate": "node -e \"console.log('Local JSON store MVP: no Prisma client generation step required.')\"",
+    "db:migrate": "node -e \"console.log('Local JSON store MVP: no database migration step required.')\"",
+    "dev": "tsx watch src/index.ts",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pagecraft/capture-core": "workspace:*",
+    "@pagecraft/shared-types": "workspace:*",
+    "fastify": "^5.2.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.8"
+  }
+}

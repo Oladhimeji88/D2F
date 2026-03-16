@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PageCraft</title>
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">PageCraft</p>
+          <h1>Capture this session</h1>
+        </div>
+        <button id="refresh-projects" class="ghost">Refresh</button>
+      </header>
+
+      <section class="panel">
+        <label class="field">
+          <span>Backend URL</span>
+          <input id="backend-url" type="url" placeholder="http://localhost:4000" />
+        </label>
+        <button id="save-config" class="ghost full">Save settings</button>
+      </section>
+
+      <section class="panel">
+        <label class="field">
+          <span>Project</span>
+          <select id="project-select"></select>
+        </label>
+        <label class="field">
+          <span>New project</span>
+          <input id="new-project-name" type="text" placeholder="Landing redesign" />
+        </label>
+      </section>
+
+      <section class="panel">
+        <p id="tab-label" class="tab-label"></p>
+        <div class="actions">
+          <button id="capture-page" class="primary">Capture Current Page</button>
+          <button id="generate-style-guide" class="secondary">Generate Style Guide</button>
+        </div>
+        <p class="hint">
+          Uses the currently authenticated browser tab. Only content visible to the current session is captured.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="grid">
+          <label class="field">
+            <span>Max depth</span>
+            <input id="max-depth" type="number" min="0" max="8" />
+          </label>
+          <label class="field">
+            <span>Max pages</span>
+            <input id="max-pages" type="number" min="1" max="500" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Include paths</span>
+          <textarea id="include-patterns" rows="3" placeholder="/docs/*"></textarea>
+        </label>
+        <label class="field">
+          <span>Exclude paths</span>
+          <textarea id="exclude-patterns" rows="3" placeholder="/logout&#10;/checkout*"></textarea>
+        </label>
+        <div class="actions">
+          <button id="preview-routes" class="ghost">Preview Routes</button>
+          <button id="crawl-site" class="primary">Crawl This Website</button>
+        </div>
+        <div id="route-summary" class="summary"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Recent jobs</h2>
+        </div>
+        <ul id="jobs-list" class="jobs"></ul>
+      </section>
+
+      <footer id="status" class="status" data-tone="neutral">Initializing extension…</footer>
+    </main>
+    <script src="./popup.js"></script>
+  </body>
+</html>
