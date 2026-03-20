@@ -196,6 +196,9 @@ function pageStyleSummary(styles: ProjectStyleTokenRecord[]) {
 export class LocalStoreRepository {
   constructor(private readonly stateFile = process.env.PAGECRAFT_STATE_FILE ?? defaultStateFile()) {}
 
+  // In-process async mutex: all mutate() calls are serialised through this chain
+  private lockChain: Promise<unknown> = Promise.resolve();
+
   private async ensureState(): Promise<StoreState> {
     try {
       const contents = await readFile(this.stateFile, "utf8");
@@ -213,9 +216,15 @@ export class LocalStoreRepository {
   }
 
   private async mutate<T>(mutator: (state: StoreState) => T | Promise<T>): Promise<T> {
-    const state = await this.ensureState();
-    const result = await mutator(state);
-    await this.writeState(state);
+    // Enqueue behind any in-flight mutate so reads and writes are serialised
+    const result = this.lockChain.then(async () => {
+      const state = await this.ensureState();
+      const value = await mutator(state);
+      await this.writeState(state);
+      return value;
+    });
+    // Always advance the chain even if this mutate throws
+    this.lockChain = result.catch(() => {});
     return result;
   }
 
@@ -315,7 +324,7 @@ export class LocalStoreRepository {
         siteId: null,
         url,
         path: parsed.pathname || "/",
-        title: title ?? parsed.pathname || url,
+        title: title ?? (parsed.pathname || url),
         status: "queued",
         createdAt: timestamp,
         updatedAt: timestamp,

@@ -22,9 +22,16 @@ export async function createApp() {
     logger: false
   });
 
+  const allowedOrigins = new Set([
+    env.WEB_URL,
+    // Chrome extensions use this scheme; add specific extension IDs via WEB_URL or extend as needed
+    ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim()) : [])
+  ]);
+
   app.addHook("onRequest", async (request, reply) => {
-    const origin = typeof request.headers.origin === "string" && request.headers.origin.length > 0 ? request.headers.origin : env.WEB_URL;
-    reply.header("Access-Control-Allow-Origin", origin);
+    const requestOrigin = typeof request.headers.origin === "string" ? request.headers.origin : "";
+    const corsOrigin = allowedOrigins.has(requestOrigin) ? requestOrigin : env.WEB_URL;
+    reply.header("Access-Control-Allow-Origin", corsOrigin);
     reply.header("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
     reply.header("Access-Control-Allow-Headers", "Content-Type");
     reply.header("Vary", "Origin");
