@@ -2,6 +2,7 @@ import { clusterPagesByTemplate, detectPatternsAcrossCaptures } from "@pagecraft
 import type { CrawlSettings, DiscoveredRoute, SerializedPage } from "@pagecraft/shared-types";
 
 import { buildPlaceholderThumbnail } from "../utils/thumbnail";
+import { takeScreenshot } from "../utils/screenshot";
 import { shouldIncludeRoute } from "../utils/url";
 import { capturePublicUrl } from "./html-capture";
 import { normalizeSerializedPage } from "./normalize";
@@ -46,6 +47,7 @@ async function finalizeCapture(
   },
   options: {
     completeJob: boolean;
+    screenshotUrl?: string;
   } = { completeJob: true }
 ) {
   const normalized = normalizeSerializedPage(payload.pageId, payload.serializedPage, payload.captureId);
@@ -57,7 +59,7 @@ async function finalizeCapture(
 
   await repository.completeCaptureResult(payload.captureId, {
     normalized,
-    screenshotUrl: buildPlaceholderThumbnail(payload.serializedPage.title || new URL(payload.serializedPage.url).hostname),
+    screenshotUrl: options.screenshotUrl ?? buildPlaceholderThumbnail(payload.serializedPage.title || new URL(payload.serializedPage.url).hostname),
     styles,
     warnings: normalized.warnings.map((warning) => ({
       ...warning,
@@ -117,7 +119,14 @@ export async function processCaptureJob(repository: LocalStoreRepository, jobId:
 
     await repository.updateJob(jobId, {
       progress: 0.62,
-      message: "Fetched page and discovered routes."
+      message: "Fetched page and taking screenshot."
+    });
+
+    const screenshotUrl = await takeScreenshot(url);
+
+    await repository.updateJob(jobId, {
+      progress: 0.8,
+      message: "Processing capture results."
     });
 
     await finalizeCapture(repository, jobId, {
@@ -126,6 +135,9 @@ export async function processCaptureJob(repository: LocalStoreRepository, jobId:
       captureId,
       mode: String(queued.payload.mode) === "style-guide" ? "style-guide" : "page",
       serializedPage: page
+    }, {
+      completeJob: true,
+      screenshotUrl: screenshotUrl ?? undefined
     });
   } catch (error) {
     await repository.updateJob(jobId, {
@@ -208,6 +220,7 @@ export async function processCrawlJob(repository: LocalStoreRepository, jobId: s
         });
 
         const serializedPage = await capturePublicUrl(route.url, settings);
+        const routeScreenshotUrl = await takeScreenshot(route.url);
         await finalizeCapture(
           repository,
           jobId,
@@ -219,7 +232,8 @@ export async function processCrawlJob(repository: LocalStoreRepository, jobId: s
             serializedPage
           },
           {
-            completeJob: false
+            completeJob: false,
+            screenshotUrl: routeScreenshotUrl ?? undefined
           }
         );
 
